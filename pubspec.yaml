@@ -1,7 +1,7 @@
 name: eson
 description: Elegant JSON (Eson for short), elegant JSON data parsing, state management
-version: 1.0.0
-author: fenger woo<hsnndly@163.com>
+version: 1.1.0
+author: fenger
 homepage:
 
 environment:

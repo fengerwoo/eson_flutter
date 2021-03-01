@@ -3,12 +3,13 @@ import 'package:eson/eson.dart';
 import 'package:flutter/material.dart';
 
 /// 监听者Widget，构建局部刷新的组件
-class WatcherWidget extends StatefulWidget{
+class WatcherWidget<T> extends StatefulWidget{
 
   Eson eson;
   String path;
   Widget child;
-  Widget Function(BuildContext context, dynamic value, Eson eson, Widget child) builder;
+  T defaultValue;
+  Widget Function(BuildContext context, T value, Eson eson, Widget child) builder;
 
 
   WatcherWidget({
@@ -16,15 +17,16 @@ class WatcherWidget extends StatefulWidget{
     @required this.path,
     @required this.builder,
     this.child,
+    this.defaultValue,
     Key key}): super(key:key);
 
 
   @override
-  State<StatefulWidget> createState() => WatcherWidgetState();
+  State<StatefulWidget> createState() => WatcherWidgetState<T>();
 
 }
 
-class WatcherWidgetState extends State<WatcherWidget>{
+class WatcherWidgetState<T> extends State<WatcherWidget<T>>{
 
   @override
   void initState() {
@@ -39,7 +41,8 @@ class WatcherWidgetState extends State<WatcherWidget>{
 
   @override
   Widget build(BuildContext context) {
-    return this.widget.builder(context, this.widget.eson.get(this.widget.path), this.widget.eson, this.widget.child);
+    T value = this.widget.eson.get(this.widget.path, defaultValue: this.widget.defaultValue);
+    return this.widget.builder(context, value, this.widget.eson, this.widget.child);
   }
 
   @override

@@ -3,21 +3,27 @@ import 'dart:convert';
 import 'package:eson/src/watcher.dart';
 
 /// Elegant JSON，简称Eson，优雅的JSON数据解析
+/// Created by 枫儿 on 2020/12/06.
+/// @email：hsnndly@163.com
 class Eson extends Object{
   dynamic _data; //JSON数据
   Map<String, dynamic> _pathIndex = {}; // 路径索引
   Watcher _watcher; // 本数据观察者
 
-  /// 创建一个解析器，可传入JSON字符串 或者 Map|List
+
+  /// @Desc  : 创建一个解析器，可传入JSON字符串 或者 Map|List
+  /// @author: 枫儿
   Eson(dynamic data,
-      {Map<String, PathDataWatcher> watch, }){
+      {Map<String, PathDataWatcher> watch = const {}, }){
     _initData(data);
     _initPathIndex(this._data);
     _watcher = Watcher(this);
     this.watch(watch, this);
   }
 
-  /// 初始化数据
+
+  /// @Desc  : 初始化数据
+  /// @author: 枫儿
   void _initData(dynamic data){
     // 数据转化为 Map 或 List
     dynamic _data = {}; // 默认数据为空 Map
@@ -33,7 +39,9 @@ class Eson extends Object{
     this._data = _data;
   }
 
-  /// 初始化路径索引
+
+  /// @Desc  : 初始化路径索引
+  /// @author: 枫儿
   void _initPathIndex(dynamic data, {String basePath = ""}){
 
     forEachItem(key, value, parentType){
@@ -83,13 +91,17 @@ class Eson extends Object{
 
   }
 
-  /// 获取数据
+
+  /// @Desc  : 获取数据
+  /// @author: 枫儿
   T get<T>(path, {defaultValue=null}){
     Map indexItem = this._pathIndex[path];
     return indexItem == null ? defaultValue : indexItem['value'];
   }
 
-  /// 更新数据
+
+  /// @Desc  : 更新数据
+  /// @author: 枫儿
   bool set(path, value){
     Map<String, dynamic> oldPathIndex = this._whereStartsWithDeepCopyValue(path);
     if(path == ""){ // 更新总数据
@@ -138,7 +150,7 @@ class Eson extends Object{
   Map<String, dynamic> _whereStartsWithDeepCopyValue(String path){
     Map<String, dynamic> data = {};
     this._pathIndex.forEach((key, value) {
-      if(key.startsWith(path)){
+      if(path.startsWith(key)){
         data[key] = json.decode(json.encode({
           "path": value['path'],
           "key": value['key'],

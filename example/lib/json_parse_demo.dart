@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 class JsonParseDemo extends StatefulWidget{
 
   @override
-  State<StatefulWidget> createState() => JsonParseDemoState();
+  State<StatefulWidget> createState() => _JsonParseDemoState();
 
 }
 
-class JsonParseDemoState extends State<JsonParseDemo>{
+class _JsonParseDemoState extends State<JsonParseDemo>{
 
 
   @override
@@ -17,25 +17,19 @@ class JsonParseDemoState extends State<JsonParseDemo>{
     /// JSON sample data
     String json = '''
     {
-    
       "name": "fenger",
-      
       "age": 28,
-      
       "address": {
         "country": "China",
         "city": "Beijing"
       },
-      
-      "companys": [
-        {
+      "companys": [{
         "name": "Alibaba Group",
         "shares": "2%"
-        }, {
+      }, {
         "name": "Tencent Group",
         "shares": "3%"
-        }
-      ]
+      }]
     }
     ''';
 
@@ -57,15 +51,15 @@ class JsonParseDemoState extends State<JsonParseDemo>{
 
     /// 获取更深级的数据
     /// Get deeper data
-    Map tencent_shares = eson.get("companys[1].shares");
+    String tencent_shares = eson.get("companys[1].shares");
 
     /// 获取不存在的数据也是安全的，默认变量返回null
     /// It is safe to get a value that does not exist, and the default variable returns null
-    Map tencent_title = eson.get("companys[1].title");
+    String tencent_title = eson.get("companys[1].title");
 
     /// 获取数据为null时，设置返回的默认值
     /// When the get value is null, set the default value returned
-    Map tencent_title2 = eson.get("companys[1].title", defaultValue: "manager");
+    String tencent_title2 = eson.get("companys[1].title", defaultValue: "manager");
 
 
     /// 更新数据
@@ -74,7 +68,9 @@ class JsonParseDemoState extends State<JsonParseDemo>{
 
     /// 增加数据
     /// add data
-    eson.set("companys[2]", { "name": "JD" , "shares": "1%"});
+    List companys = eson.get("companys");
+    companys.add( { "name": "JD" , "shares": "1%"});
+    eson.set("companys[2]", companys);
 
 
     String tojson = eson.toString();
@@ -83,11 +79,29 @@ class JsonParseDemoState extends State<JsonParseDemo>{
       child: Column(
         children: [
             ListTile(
+              leading: Icon(Icons.album),
               title: Text("JsonParseDemo"),
               subtitle: Text("Basic pure JSON parsing operation without Model"),
             ),
 
+            DataTable(
+                columns: [
+                  DataColumn(label: Text('name')),
+                  DataColumn(label: Text('city')),
+                  DataColumn(label: Text('shares')),
+                  DataColumn(label: Text('title2')),
+                ],
+                rows: [
+                  DataRow(cells: [
+                    DataCell(Text(name)),
+                    DataCell(Text(city)),
+                    DataCell(Text(tencent_shares)),
+                    DataCell(Text(tencent_title2)),
+                  ])
+                ],
+            ),
 
+            Text(tojson),
         ],
       ),
     );
