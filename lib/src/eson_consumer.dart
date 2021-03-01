@@ -12,7 +12,7 @@ class EsonConsumer<T> extends StatefulWidget {
   Widget child;
   T defaultValue;
 
-  final Widget Function(BuildContext context, dynamic value, Eson eson, Widget child) builder;
+  final Widget Function(BuildContext context, T value, Eson eson, Widget child) builder;
 
   EsonConsumer({
     this.eson,
@@ -26,7 +26,7 @@ class EsonConsumer<T> extends StatefulWidget {
   _EsonConsumerState createState() => _EsonConsumerState<T>();
 }
 
-class _EsonConsumerState<T> extends State<EsonConsumer> {
+class _EsonConsumerState<T> extends State<EsonConsumer<T>> {
 
 
 

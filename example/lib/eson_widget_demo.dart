@@ -72,7 +72,7 @@ class _EsonWidgetDemoState extends State<EsonWidgetDemo> {
                         /// Optional pass in child, reuse sub-components to reduce unnecessary performance consumption
                         EsonConsumer<int>(
                             path: "companys[0].shares",
-                            builder: (BuildContext context, dynamic value, Eson eson, Widget child){
+                            builder: (BuildContext context, int value, Eson eson, Widget child){
                               return Text("${value}%");
                             }
                         )),
@@ -81,7 +81,7 @@ class _EsonWidgetDemoState extends State<EsonWidgetDemo> {
                         EsonConsumer<int>(
                             path: "companys[1].shares",
                             defaultValue: 0,
-                            builder: (BuildContext context, dynamic value, Eson eson, Widget child){
+                            builder: (BuildContext context, int value, Eson eson, Widget child){
                               return Text("${value}%");
                             }
                         )),
