@@ -2,7 +2,8 @@ name: eson
 description: Elegant JSON (Eson for short), elegant JSON data parsing, state management
 version: 1.1.0
 author: fenger
-homepage:
+homepage: https://github.com/fengerwoo
+repository: https://github.com/fengerwoo/eson_flutter
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

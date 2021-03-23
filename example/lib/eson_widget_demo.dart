@@ -70,9 +70,10 @@ class _EsonWidgetDemoState extends State<EsonWidgetDemo> {
                         /// Optional incoming eson instance can be specified eson instance (no longer look up EsonProvider after designation)
                         /// Optional input defaultValue, set the default value when the get is empty
                         /// Optional pass in child, reuse sub-components to reduce unnecessary performance consumption
-                        EsonConsumer<int>(
+                        EsonConsumer<String>(
                             path: "companys[0].shares",
-                            builder: (BuildContext context, int value, Eson eson, Widget child){
+                            defaultValue:  "",
+                            builder: (BuildContext context, String value, Eson eson, Widget child){
                               return Text("${value}%");
                             }
                         )),

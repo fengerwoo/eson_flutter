@@ -94,9 +94,14 @@ class Eson extends Object{
 
   /// @Desc  : 获取数据
   /// @author: 枫儿
-  T get<T>(path, {defaultValue=null}){
+  T get<T>(path, {defaultValue}){
     Map indexItem = this._pathIndex[path];
-    return indexItem == null ? defaultValue : indexItem['value'];
+    if(indexItem != null && indexItem["value"] != null){
+      return indexItem["value"];
+    }else{
+      return defaultValue;
+    }
+    // return indexItem == null ? defaultValue : indexItem['value'];
   }
 
 
@@ -118,7 +123,13 @@ class Eson extends Object{
         var parentItem = indexItem["parent"];
         // 修改数据
         try{ parentItem['value'][indexItem["key"]] = value; }catch(e){
-          print("EsonError: Inconsistent Value types，The original value was ${indexItem["value"].runtimeType.toString()}, now the assignment is ${value.runtimeType.toString()}. path：${path}",);
+
+          String desc = "Inconsistent Value types，The original value was ${indexItem["value"].runtimeType.toString()}, now the assignment is ${value.runtimeType.toString()}.";
+          var stack = StackTrace.current.toString();
+          var callStack = stack.split("\n")[1];
+
+          print('------------- Eson Error -------------\n path 「${path}」: $e\n$desc\n$callStack\n\n');
+
           return false;
         }
 

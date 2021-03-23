@@ -5,6 +5,7 @@ import '../eson.dart';
 
 class EsonConsumer<T> extends StatefulWidget {
 
+  String callStack = "";
   bool isInitWatcher = false;
 
   Eson eson;
@@ -20,7 +21,12 @@ class EsonConsumer<T> extends StatefulWidget {
     @required this.builder,
     this.child,
     this.defaultValue,
-    Key key}): super(key:key);
+    Key key}) : super(key:key) {
+
+    /// 获取使用组件的代码位置
+    var stack = StackTrace.current.toString();
+    callStack = stack.split("\n")[1];
+  }
 
   @override
   _EsonConsumerState createState() => _EsonConsumerState<T>();
@@ -29,13 +35,30 @@ class EsonConsumer<T> extends StatefulWidget {
 class _EsonConsumerState<T> extends State<EsonConsumer<T>> {
 
 
-
   @override
   Widget build(BuildContext context) {
     this.initWatcher(context); /// 首次build时初始化
+    return this.widget.builder(context, getValue(), this.widget.eson, this.widget.child);
+  }
 
-    T value = this.widget.eson.get(this.widget.path, defaultValue: this.widget.defaultValue);
-    return this.widget.builder(context, value, this.widget.eson, this.widget.child);
+  T getValue(){
+    T value;
+
+    /// 捕获泛型类型不一致异常
+    try{
+      value = this.widget.eson.get(this.widget.path, defaultValue: this.widget.defaultValue);
+    }catch (e, stack) {
+      print('------------- EsonConsumer Error -------------\n path 「 ${this.widget.path} 」: $e\n ${this.widget.callStack} \n\n');
+
+      /// 默认值不为空，忽略异常走默认值，否则抛出异常
+      if(this.widget.defaultValue != null){
+        value = this.widget.defaultValue;
+      }else{
+        throw e;
+      }
+    }
+
+    return value;
   }
 
   initWatcher(BuildContext context){

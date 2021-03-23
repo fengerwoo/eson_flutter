@@ -40,13 +40,17 @@ class Watcher{
   /// 提交更新
   /// 更新节点path，影响的变量path，新数据索引
   void commitUpdate(String updatePath, Map<String, dynamic> oldPathIndex, Map<String, dynamic> newPathIndex){
-    oldPathIndex.forEach((path, nodeOldData) { // 遍历影响的path
-      if(this._watch[path] != null){
+    newPathIndex.forEach((path, nodeData) { // 遍历所有的path
+      if(this._watch[path] != null && path.startsWith(updatePath)){ // 只影响 存在监听列表 并且 属于updatePath及其以下的 path
          List watchList = this._watch[path];
          watchList.forEach((watch) { // 遍历回调给所有监听
            PathDataWatcher callback = watch['callback'];
-           dynamic oldData = nodeOldData['value'];
-           dynamic newData = this._eson.get(path);
+
+           // 获取旧数据，如果path原本不存在则为null
+           dynamic nodeOldData = oldPathIndex[path];
+           dynamic oldData = nodeOldData != null ? nodeOldData['value'] : null;
+
+           dynamic newData = nodeData['value'];
 
            if(oldData != newData){ //有变化才更新
              callback(newData, oldData);
