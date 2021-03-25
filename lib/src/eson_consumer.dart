@@ -1,4 +1,5 @@
 import 'package:eson/src/eson_provider.dart';
+import 'package:eson/src/print_log.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../eson.dart';
@@ -48,8 +49,7 @@ class _EsonConsumerState<T> extends State<EsonConsumer<T>> {
     try{
       value = this.widget.eson.get(this.widget.path, defaultValue: this.widget.defaultValue);
     }catch (e, stack) {
-      print('------------- EsonConsumer Error -------------\n path 「 ${this.widget.path} 」: $e\n ${this.widget.callStack} \n\n');
-
+      PrintLog.e(tag: "------------- EsonConsumer Error -------------", msg: ' path 「 ${this.widget.path} 」: $e\n ${this.widget.callStack} \n\n');
       /// 默认值不为空，忽略异常走默认值，否则抛出异常
       if(this.widget.defaultValue != null){
         value = this.widget.defaultValue;

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:eson/src/print_log.dart';
 import 'package:eson/src/watcher.dart';
 
 /// Elegant JSON，简称Eson，优雅的JSON数据解析
@@ -128,7 +129,7 @@ class Eson extends Object{
           var stack = StackTrace.current.toString();
           var callStack = stack.split("\n")[1];
 
-          print('------------- Eson Error -------------\n path 「${path}」: $e\n$desc\n$callStack\n\n');
+          PrintLog.e(tag: "------------- Eson Error -------------", msg: " path 「${path}」: $e\n$desc\n$callStack\n\n");
 
           return false;
         }
