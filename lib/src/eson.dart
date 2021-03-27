@@ -48,9 +48,9 @@ class Eson extends Object{
     forEachItem(key, value, parentType){
 
       // 计算当前的路径
-      String nodeName = parentType == "Map" ? "${key}" : "[${key}]";
+      String nodeName = parentType == "Map" ? "$key" : "[$key]";
       String nodeDelimite = (parentType == "Map" && basePath != "") ? "." : ""; //分隔符
-      String path = "${basePath}${nodeDelimite}${nodeName}"; //当前的路径
+      String path = "$basePath$nodeDelimite$nodeName"; //当前的路径
 
       //添加到索引
       this._pathIndex[path] = {

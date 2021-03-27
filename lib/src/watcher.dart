@@ -41,8 +41,12 @@ class Watcher{
   /// 更新节点path，影响的变量path，新数据索引
   void commitUpdate(String updatePath, Map<String, dynamic> oldPathIndex, Map<String, dynamic> newPathIndex){
     newPathIndex.forEach((path, nodeData) { // 遍历所有的path
-      if(this._watch[path] != null && path.startsWith(updatePath)){ // 只影响 存在监听列表 并且 属于updatePath及其以下的 path
-         List watchList = this._watch[path];
+
+      if(this._watch[path] != null && // 只影响 存在监听列表
+          (path.startsWith(updatePath) || // 的子节点
+           updatePath.startsWith(path))){  // 或父节点
+
+        List watchList = this._watch[path];
          watchList.forEach((watch) { // 遍历回调给所有监听
            PathDataWatcher callback = watch['callback'];
 

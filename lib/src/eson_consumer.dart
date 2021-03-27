@@ -90,11 +90,12 @@ class _EsonConsumerState<T> extends State<EsonConsumer<T>> {
 
   @override
   void dispose() {
-    super.dispose();
     /// 注销监听者
     if(this.widget.eson != null){
       this.widget.eson.removeWatch(this);
     }
+
+    super.dispose();
   }
 
 }
